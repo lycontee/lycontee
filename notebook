@@ -5,6 +5,29 @@
 
 - [Gradio入门详细教程_gradio教程-CSDN博客](https://blog.csdn.net/weixin_45277161/article/details/134998849)
 
+- [python fuzzywuzzy模块 模糊字符串匹配详细用法_fuzz.ratio keyerror-CSDN博客](https://blog.csdn.net/sunyao_123/article/details/76942809)
+
+- [240708-Sphinx常用插件整理_sphinx 代码插件-CSDN博客](https://blog.csdn.net/qq_33039859/article/details/140279965)
+
+- [AutoDL私有云初体验 - 知乎](https://zhuanlan.zhihu.com/p/684908968)
+
+- [HF镜像网站](https://hf-mirror.com/)
+
+- [最新开源大语言模型GLM-4模型详细教程—环境配置+模型微调+模型部署+效果展示_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV11z421b7f4/?spm_id_from=333.880.my_history.page.click&vd_source=e5f5fb7dfde58880e2a7485fc9f2da4f)
+
+
+---
+
+## 工具
+
+- [Jupyter Lab登录，密码：aigc.jnw](http://aigc-wenxin:5010/lab/tree/Projetcs)
+
+---
+
+## 测试地址
+- http://aigc-wenxin:5009
+
+---
 
 ## 示例代码
 
@@ -46,35 +69,11 @@ if __name__ == "__main__":
         allowed_paths=['assets'])
 ```
 
-# 测试地址：
-- http://aigc-wenxin:5009
+---
 
-
-## 演示命令
-
-```bash
-[jnw@PPSE1LLM143 ~]$ conda info -e
-# conda environments:
-#
-intership             *  /home/jnw/.conda/envs/intership
-base                     /opt/miniconda3
-ChuanhuChat              /opt/miniconda3/envs/ChuanhuChat
-dbgpt_hub_lc             /opt/miniconda3/envs/dbgpt_hub_lc
-test02                   /opt/miniconda3/envs/test02
-testLangChain            /opt/miniconda3/envs/testLangChain
-visgpu                   /opt/miniconda3/envs/visgpu
-wenxin-doc               /opt/miniconda3/envs/wenxin-doc
-
-[jnw@PPSE1LLM143 ~]$ conda activate intership
-(intership)[jnw@PPSE1LLM143 ~]$ cd Projetcs/
-(intership)[jnw@PPSE1LLM143 Projetcs]$ python test_gradio1.py 
-Running on local URL:  http://0.0.0.0:5009
-
-To create a public link, set `share=True` in `launch()`.           
-进入文件夹cd <path>,返回cd
-```
 
 ## 组件示例
+
 
 ### 输入组件
 
@@ -162,9 +161,9 @@ To create a public link, set `share=True` in `launch()`.
 13. *Video*  
     播放视频文件。
 
+---
 
-
-## Conda环境查看、激活与推出
+## Conda环境查看、激活与退出
 ```bash
 (intership)[jnw@PPSE1LLM143 Projetcs]$ conda activate intership
 (intership)[jnw@PPSE1LLM143 Projetcs]$ conda info -e
@@ -181,12 +180,28 @@ wenxin-doc               /opt/miniconda3/envs/wenxin-doc
 
 (intership)[jnw@PPSE1LLM143 Projetcs]$ conda deactivate
 [jnw@PPSE1LLM143 Projetcs]$ conda activate intership
+(intership)[jnw@PPSE1LLM143 ~]$ cd Projetcs/
+(intership)[jnw@PPSE1LLM143 Projetcs]$ python test_gradio1.py 
+Running on local URL:  http://0.0.0.0:5009
+
+To create a public link, set `share=True` in `launch()`.           
 ```
+*进入文件夹 cd ”path“,返回主文件夹 cd*
+
+---
 
 ## GLM-4模型
-本体在basic_demo中，对于gradio配置的网页端文件：*trans_web_demo*，配置网路端口后，启用热重载模式运行
-**对于其中模型finetune，可以选用自带的lora，但由于llama可视化优点我会选择使用它。**
+本体在*basic_demo*中，    
+需要先将模型的地址传入代码中，   
+位置为：**line30** 
+```bash
+os.environ.get('MODEL_PATH', '/sota/sota_models/glm-4-9b-chat')
+```
+其中的web_demo，对于gradio配置的网页端文件：*trans_web_demo*，配置网路端口后，启用热重载模式运行
+**对于其中模型finetune，可以选用自带的lora，但由于llama可视化优点，我会选择使用它。(注意配置网路端口）**
 
+---
+      
 ### 关于LLaMA可视化网页配置所涉及的域名修改        
 需要到main/src/llamafactory/webui中找到interface.py , 并修改最后两部分中的servername以及serverport：     
 ```bash
@@ -201,21 +216,67 @@ def run_web_demo() -> None:
     server_name = os.environ.get("GRADIO_SERVER_NAME", "0.0.0.0")
     create_web_demo().queue().launch(share=gradio_share, server_name=server_name, server_port=5009, inbrowser=True)
 ```
-### 关于json文件        
-换行是\n,键值对，值的格式跟c一样     
-是用于储存数据的     
-格式为:     
-[     
-  {              
-  ""="",              
-  ""="",              
-  ""=""              
-  },               
-  ……               
-]
 
+---
+
+### 关于json文件        
+    换行是\n,键值对,值的格式跟c一样,是用于储存数据的     
+    格式为:     
+    [     
+      {              
+      ""="",              
+      ""="",              
+      ""=""              
+      },               
+      ……               
+    ]
+
+#### python 模块
+
+**导入json  >>>    import  json**
+
+```python
+json.loads()    #字符串加载
+
+json.load()     #文件加载
+
+#示例如下
+
+#示例数据:
+
+[
+    {
+        "name":"Alice",
+        "age":30,
+        "address":{
+            "city":"neverland",
+            "postcode":"12345"            
+        }
+        ...
+    }
+
+#文件读取json：
+with open('data.json','r') as file:
+    data = json.load(file)
+
+#提取数据
+name = data['name']
+age = data['age']
+city = data['address']['city']
+...
+
+#展示数据
+print(f"Name:{name}")
+...
+
+
+```
+
+---
 
 ## the fuzz 模糊匹配   
+
+#### 第一部分
 
 **>>> from fuzzywuzzy import fuzz**            
 **>>> from fuzzywuzzy import process**         
@@ -223,14 +284,16 @@ def run_web_demo() -> None:
 
 [1]>>> fuzz.ratio("this is a test", "this is a test!")
 out    97
-是对字段的全匹配
+是对字段的全匹配，对顺序敏感
 
 [2]>>> fuzz.partial_ratio("this is a test", "this is a test!")
 out    100
-是对字段的模糊匹配
+是对字段的模糊匹配，对顺序敏感
 
 ```
----
+
+#### 第二部分
+
 ```shell
 
 [3]>>> fuzz._process_and_sort(s, force_ascii, full_process=True)
@@ -240,7 +303,7 @@ force_ascii(TF)
 T 转换为ascii码
 
 full_process(TF)
-T 将s转小写，去除字母和数字以外字符（不包含-），剩下字符串用space分割，再进行排序。
+T utils.full_process()：将s转小写，去除字母和数字以外字符（不包含-），剩下字符串用space分割，再进行排序。
 F 直接对s排序
 
 
@@ -255,51 +318,101 @@ F 直接对s排序
 
 [5]>>> fuzz.token_sort_ratio("fuzzy wuzzy was a bear", "wuzzy fuzzy was a bear")
 out    100
-partial=F 时的函数[4];
-
+partial=F 时的函数[4]
+对顺序不敏感
 
 
 [6]>>> fuzz.partial_token_sort_ratio(s1, s2, force_ascii=True, full_process=True)
 partial=T 时的函数[4]
+对顺序不敏感
 ```
----
+
+#### 第三部分
 
 ```shell
 
 [7]>>> fuzz.token_set_ratio("fuzzy was a bear", "fuzzy fuzzy was a bear")
 out    100
 较函数[5]忽略了重复单词
+对顺序不敏感
 
 
-[8]>>>fuzz._token_set(s1, s2, partial=True, force_ascii=True, full_process=True)
+[8]>>> fuzz._token_set(s1, s2, partial=True, force_ascii=True, full_process=True)
 当partial= F 时，与函数[7]相同
 
 
-[9]>>>fuzz.partial_token_set_ratio(s1, s2, force_ascii=True, full_process=True)
+[9]>>> fuzz.partial_token_set_ratio(s1, s2, force_ascii=True, full_process=True)
 当partial= T 时，与函数[8]相同
 ```
----
+
+#### 第四部分
+
 ```shell
 
+[10]>>> fuzz.QRatio(s1, s2, force_ascii=True, full_process=True)
+当full_process=T 时，utils.full_process()：先将字符串s转换为小写，去掉除字母和数字之外的字符（发现不能去掉-字符），剩下的字符串以空格分开，然后排序。再函数[1]处理，对顺序敏感
 
 
+[11]>>> fuzz.UQRatio(s1, s2, full_process=True)
+force_ascii= F时的函数[10]
 
 
+[12]>>> fuzz.WRatio(s1, s2, force_ascii=True, full_process=True)
+另一种不同算法计算相似度，对顺序敏感
 
 
+[13]>>> UWRatio(s1, s2, full_process=True)
+force_ascii= F 时的函数[12]
+```
+
+#### 第五部分
+
+### 部分总结
+    如果计算相似度的字符串只有字母和数字，直接可以用函数[1]ratio（）和函数[2]partial_ratio()。   
+       
+    但如果还有其他字符，而且我们想要去掉这些没用字符，就用下边的。   
+       
+    下边的函数都对顺序不敏感，但函数[5]token_sort_ratio（）系列是全字符匹配，不管顺序。   
+       
+    而函数[7]token_set_ratio（）只要第二个字符串包含第一个字符串就100,不管顺序。
+    
+
+#### 第六部分
+
+```shell
+
+EXAMPLE：
+
+>>> choices = ["Atlanta Falcons", "New York Jets", "New York Giants", "Dallas Cowboys"]
+>>> process.extract("new york jets", choices, limit=2)
+    [('New York Jets', 100), ('New York Giants', 78)]
+>>> process.extractOne("cowboys", choices)
+    ("Dallas Cowboys", 90)
 
 
+[14]>>> process.extract(query, choices, processor=default_processor, scorer=default_scorer, limit=5)
+query 是字符串
+choices 是数组，数组元素 是字符串
+processor 是对输入比较的字符串的处理函数，默认是fuzzywuzzy.utils.full_process()：先将字符串s转换为小写，去掉除字母和数字之外的字符（发现不能去掉-字符），剩下的字符串以空格分开，然后排序
+scorer 是计算两个字符串相似度的函数，默认为函数[12]
+limit 是输出元素个数
+
+输出为数组，元素为元组，元组第一个匹配到的为str，第二个匹配到的为int（score）
+对于输出:按照score排序
 
 
+[15]>>> process.extractWithoutOrder(query, choices, processor=default_processor, scorer=default_scorer, score_cutoff=0)
+score_cutoff 为一个阈值, 当score小于该阈值时，不会输出。返回一个生成器，输出每个大于 score_cutoff的匹配，按顺序输出，不排序。
 
 
+[16]>>> process.extractBests(query, choices, processor=default_processor, scorer=default_scorer, score_cutoff=0, limit=5)
+函数[16]和函数[14]都调用了函数[15]，只不过函数[16]能传输 score_cutoff。
 
 
+[17]>>> process.extractOne(query, choices, processor=default_processor, scorer=default_scorer, score_cutoff=0)
+也调用了函数[15]，能传输score_cutoff,只不过只输出一个score最高的值
 
 
-
-
-
-
-
-
+[18]>>> process.dedupe(contains_dupes, threshold=70, scorer=fuzz.token_set_ratio)
+contains_dupes 是数组，数组元素 为字符串。
+取出相似度小于 threshold 的字符串，相似度大于 threshold 的字符串取最长一个。
