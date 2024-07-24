@@ -1,0 +1,305 @@
+## 学习资料
+- [Custom Components In Five Minutes](https://www.gradio.app/guides/custom-components-in-five-minutes)
+
+- [一文搞懂模型展示工具Gradio的所有功能 - 知乎](https://zhuanlan.zhihu.com/p/679668818)
+
+- [Gradio入门详细教程_gradio教程-CSDN博客](https://blog.csdn.net/weixin_45277161/article/details/134998849)
+
+
+## 示例代码
+
+```python
+#%%
+import os 
+import gradio as gr
+
+# %%
+with gr.Blocks() as demo: 
+    title = """
+    <div style="text-align: center;">
+    <h1>💻 Intership: Learning Gradio Component </h1> 
+    </div>
+    """
+
+    gr.HTML(title)
+
+    
+def greet(name):
+    return "Hello " + name + "!"
+
+demo = gr.Interface(
+    fn=greet, 
+    inputs="textbox", 
+    outputs="textbox"
+    #可以加title，description来完成标题和概述的编写
+)
+
+
+
+## 确保程序在5009端口使用
+if __name__ == "__main__":
+    demo.launch(
+        server_name='0.0.0.0',
+        server_port=5009,
+        show_api=False,
+        share=False,
+        allowed_paths=['assets'])
+```
+
+# 测试地址：
+- http://aigc-wenxin:5009
+
+
+## 演示命令
+
+```bash
+[jnw@PPSE1LLM143 ~]$ conda info -e
+# conda environments:
+#
+intership             *  /home/jnw/.conda/envs/intership
+base                     /opt/miniconda3
+ChuanhuChat              /opt/miniconda3/envs/ChuanhuChat
+dbgpt_hub_lc             /opt/miniconda3/envs/dbgpt_hub_lc
+test02                   /opt/miniconda3/envs/test02
+testLangChain            /opt/miniconda3/envs/testLangChain
+visgpu                   /opt/miniconda3/envs/visgpu
+wenxin-doc               /opt/miniconda3/envs/wenxin-doc
+
+[jnw@PPSE1LLM143 ~]$ conda activate intership
+(intership)[jnw@PPSE1LLM143 ~]$ cd Projetcs/
+(intership)[jnw@PPSE1LLM143 Projetcs]$ python test_gradio1.py 
+Running on local URL:  http://0.0.0.0:5009
+
+To create a public link, set `share=True` in `launch()`.           
+进入文件夹cd <path>,返回cd
+```
+
+## 组件示例
+
+### 输入组件
+
+1. *Audio*        
+   允许用户上传音频文件或直接录音。参数：source: 指定音频来源（如麦克风）、type: 指定返回类型。   
+    **示例：gr.Audio(source="microphone", type="filepath")**       
+2. *Checkbox*        
+   提供复选框，用于布尔值输入。参数：label: 显示在复选框旁边的文本标签。  
+    **示例：gr.Checkbox(label="同意条款")**          
+3. *CheckboxGroup*            
+   允许用户从一组选项中选择多个。参数：choices: 字符串数组，表示复选框的选项、label: 标签文本。  
+    **示例：gr.CheckboxGroup(["选项1", "选项2", "选项3"], label="选择你的兴趣")**          
+4. *ColorPicker*             
+   用于选择颜色，通常返回十六进制颜色代码。参数：default: 默认颜色值。  
+    **示例：gr.ColorPicker(default="#ff0000")**     
+5. *Dataframe*               
+   允许用户上传CSV文件或输入DataFrame。参数：headers: 列标题数组、row_count: 初始显示的行数。  
+    **示例：gr.Dataframe(headers=["列1", "列2"], row_count=5)**      
+6. *Dropdown*               
+   下拉菜单，用户可以从中选择一个选项。参数：choices: 字符串数组，表示下拉菜单的选项、label: 标签文本。  
+    **示例：gr.Dropdown(["选项1", "选项2", "选项3"], label="选择一个选项")**     
+7. *File*                   
+    用于上传任意文件，支持多种文件格式。参数：file_count: 允许上传的文件数量，如"single"或"multiple"、type: 返回的数据类型，如"file"或"auto"。  
+    **示例：gr.File(file_count="single", type="file")**      
+8. *Image*                      
+    用于上传图片，支持多种图像格式。参数：type图像类型，如pil。  
+    **示例：gr.Image(type='pil')**       
+9. *Number*                    
+    数字输入框，适用于整数和浮点数。参数：default: 默认数字、label: 标签文本。  
+    **示例：gr.Number(default=0, label="输入一个数字")**      
+10. *Radio*                 
+    单选按钮组，用户从中选择一个选项。参数：choices: 字符串数组，表示单选按钮的选项、label: 标签文本。  
+    **示例：gr.Radio(["选项1", "选项2", "选项3"], label="选择一个选项")**     
+11. *Slider*        
+    滑动条，用于选择一定范围内的数值。参数：minimum: 最小值、maximum: 最大值、step: 步长、label: 标签文本。  
+    **示例：gr.Slider(minimum=0, maximum=10, step=1, label="调整数值")**       
+12. *Textbox*                   
+    单行文本输入框，适用于简短文本。参数：default: 默认文本、placeholder: 占位符文本。  
+    **示例：gr.Textbox(default="默认文本", placeholder="输入文本")**       
+13. *Textarea*                           
+    多行文本输入区域，适合较长的文本输入。参数：lines: 显示行数、placeholder: 占位符文本。  
+    **示例：gr.Textarea(lines=4, placeholder="输入长文本")**        
+14. *Time*                      
+    用于输入时间。参数：label: 标签文本。  
+    **示例：gr.Time(label="选择时间")**        
+15. *Video*                         
+    视频上传组件，支持多种视频格式。参数：label: 标签文本。  
+    **示例：gr.Video(label="上传视频")**              
+16. *Data*           
+    用于上传二进制数据，例如图像或音频的原始字节。参数：type: 数据类型，如"auto"自动推断。  
+    **示例：gr.Data(type="auto", label="上传数据")**        
+
+
+### 输出组件
+
+
+1. *Audio*  
+    播放音频文件。参数：type 指定输出格式。            
+    **示例：gr.Audio(type="auto")**
+2. *Carousel*  
+    以轮播方式展示多个输出，适用于图像集或多个数据点。参数：item_type 设置轮播项目类型。       
+    **示例：gr.Carousel(item_type="image")**
+3. *Dataframe*   
+    展示Pandas DataFrame，适用于表格数据。参数：type 指定返回的DataFrame类型。     
+    **示例：gr.Dataframe(type="pandas")**
+4. *Gallery*   
+    以画廊形式展示一系列图像。
+5. *HTML*   
+    展示HTML内容，适用于富文本或网页布局。
+6. *Image*  
+    展示图像。参数：type 指定图像格式。          
+    **示例：gr.Image(type="pil")**
+7. *JSON*  
+    以JSON格式展示数据，便于查看结构化数据。
+8. *KeyValues*  
+    以键值对形式展示数据。
+9. *Label*  
+    展示文本标签，适用于简单的文本输出。
+10. *Markdown*  
+    支持Markdown格式的文本展示。
+11. *Plot*  
+    展示图表，如matplotlib生成的图表。
+12. *Text*  
+    用于显示文本，适合较长的输出。
+13. *Video*  
+    播放视频文件。
+
+
+
+## Conda环境查看、激活与推出
+```bash
+(intership)[jnw@PPSE1LLM143 Projetcs]$ conda activate intership
+(intership)[jnw@PPSE1LLM143 Projetcs]$ conda info -e
+# conda environments:
+#
+intership             *  /home/jnw/.conda/envs/intership
+base                     /opt/miniconda3
+ChuanhuChat              /opt/miniconda3/envs/ChuanhuChat
+dbgpt_hub_lc             /opt/miniconda3/envs/dbgpt_hub_lc
+test02                   /opt/miniconda3/envs/test02
+testLangChain            /opt/miniconda3/envs/testLangChain
+visgpu                   /opt/miniconda3/envs/visgpu
+wenxin-doc               /opt/miniconda3/envs/wenxin-doc
+
+(intership)[jnw@PPSE1LLM143 Projetcs]$ conda deactivate
+[jnw@PPSE1LLM143 Projetcs]$ conda activate intership
+```
+
+## GLM-4模型
+本体在basic_demo中，对于gradio配置的网页端文件：*trans_web_demo*，配置网路端口后，启用热重载模式运行
+**对于其中模型finetune，可以选用自带的lora，但由于llama可视化优点我会选择使用它。**
+
+### 关于LLaMA可视化网页配置所涉及的域名修改        
+需要到main/src/llamafactory/webui中找到interface.py , 并修改最后两部分中的servername以及serverport：     
+```bash
+def run_web_ui() -> None:
+    gradio_share = os.environ.get("GRADIO_SHARE", "0").lower() in ["true", "1"]
+    server_name = os.environ.get("GRADIO_SERVER_NAME", "0.0.0.0")
+    create_ui().queue().launch(share=gradio_share, server_name=server_name, server_port=5009, inbrowser=True)
+
+
+def run_web_demo() -> None:
+    gradio_share = os.environ.get("GRADIO_SHARE", "0").lower() in ["true", "1"]
+    server_name = os.environ.get("GRADIO_SERVER_NAME", "0.0.0.0")
+    create_web_demo().queue().launch(share=gradio_share, server_name=server_name, server_port=5009, inbrowser=True)
+```
+### 关于json文件        
+换行是\n,键值对，值的格式跟c一样     
+是用于储存数据的     
+格式为:     
+[     
+  {              
+  ""="",              
+  ""="",              
+  ""=""              
+  },               
+  ……               
+]
+
+
+## the fuzz 模糊匹配   
+
+**>>> from fuzzywuzzy import fuzz**            
+**>>> from fuzzywuzzy import process**         
+```shell
+
+[1]>>> fuzz.ratio("this is a test", "this is a test!")
+out    97
+是对字段的全匹配
+
+[2]>>> fuzz.partial_ratio("this is a test", "this is a test!")
+out    100
+是对字段的模糊匹配
+
+```
+---
+```shell
+
+[3]>>> fuzz._process_and_sort(s, force_ascii, full_process=True)
+对字符串s排序
+
+force_ascii(TF)
+T 转换为ascii码
+
+full_process(TF)
+T 将s转小写，去除字母和数字以外字符（不包含-），剩下字符串用space分割，再进行排序。
+F 直接对s排序
+
+
+[4]>>> fuzz._token_sort(s1, s2, partial=True, force_ascii=True, full_process=True)
+给出s1,s2两者相似度
+
+是首先函数[3]处理c,
+当partial 为T 时，再函数[2]处理；
+当partial 为F 时，再函数[1]处理。
+
+
+
+[5]>>> fuzz.token_sort_ratio("fuzzy wuzzy was a bear", "wuzzy fuzzy was a bear")
+out    100
+partial=F 时的函数[4];
+
+
+
+[6]>>> fuzz.partial_token_sort_ratio(s1, s2, force_ascii=True, full_process=True)
+partial=T 时的函数[4]
+```
+---
+
+```shell
+
+[7]>>> fuzz.token_set_ratio("fuzzy was a bear", "fuzzy fuzzy was a bear")
+out    100
+较函数[5]忽略了重复单词
+
+
+[8]>>>fuzz._token_set(s1, s2, partial=True, force_ascii=True, full_process=True)
+当partial= F 时，与函数[7]相同
+
+
+[9]>>>fuzz.partial_token_set_ratio(s1, s2, force_ascii=True, full_process=True)
+当partial= T 时，与函数[8]相同
+```
+---
+```shell
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
