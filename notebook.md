@@ -15,6 +15,8 @@
 
 - [最新开源大语言模型GLM-4模型详细教程—环境配置+模型微调+模型部署+效果展示_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV11z421b7f4/?spm_id_from=333.880.my_history.page.click&vd_source=e5f5fb7dfde58880e2a7485fc9f2da4f)
 
+- [GLM-4-9B-Chat WebDemo 部署报错：ValueError: too many values to unpack_慕课手记](https://www.imooc.com/article/346060)
+
 
 ---
 
@@ -160,6 +162,121 @@ if __name__ == "__main__":
     用于显示文本，适合较长的输出。
 13. *Video*  
     播放视频文件。
+
+
+### 实例代码
+```bash
+import gradio as gr
+ 
+# 定义一个处理多种 Gradio 输入组件值的函数
+def greet(textbox, dropdown, radio, checkbox, slider, image, audio, video, file, number, dataframe, color):
+    # 创建一个包含用户选择的字符串
+    output_text = f"您选择了：{textbox}，{dropdown}，{radio}，{checkbox}，滑块值：{slider}，数字：{number}，颜色：{color}"
+    # 创建一个包含用户选择的 Markdown 字符串（加粗文本）
+    output_markdown = f"**您选择了**：{textbox}，{dropdown}，{radio}，{checkbox}，滑块值：{slider}，数字：{number}，颜色：{color}"
+    # 创建一个包含用户输入选项的 JSON 字典
+    output_json = {
+        "textbox": textbox,
+        "dropdown": dropdown,
+        "radio": radio,
+        "checkbox": checkbox,
+        "slider": slider,
+        "number": number,
+        "color": color
+    }
+ 
+    # 保存图像（如果提供了输入图像）
+    output_image = None
+    if image is not None:
+        output_image = "output_image.png"
+        image.save(output_image)
+ 
+    # 保存音频（如果提供了输入音频）
+    output_audio = None
+    if audio is not None:
+        output_audio = "output_audio.wav"
+        with open(output_audio, "wb") as f:
+            f.write(audio)
+ 
+    # 保存视频（如果提供了输入视频）
+    output_video = None
+    if video is not None:
+        output_video = "output_video.mp4"
+        with open(output_video, "wb") as f:
+            f.write(video)
+ 
+    # 保存文件（如果提供了输入文件）
+    output_file = None
+    if file:
+        output_file = 'example_output.txt'
+        with open(output_file, 'w') as f:
+            f.write(output_text)
+ 
+    # 处理数据框（如果提供了输入数据框）
+    output_dataframe = None
+    if dataframe is not None:
+        output_dataframe = dataframe.to_html(index=False)
+ 
+    # 返回颜色
+    output_color = "您选择的颜色是：{color}"
+ 
+    # 返回处理后的各种输出组件值
+    return None, output_text, None, output_markdown, output_image, output_audio, output_json, output_file, output_video, output_dataframe, output_color
+ 
+# 创建一个 Gradio Interface 实例，包含多个输入和输出组件
+iface2 = gr.Interface(
+    greet,
+    [
+        gr.Textbox(lines=2, placeholder="请输入文本…"),
+        gr.Dropdown(choices=["选项A", "选项B", "选项C"]),
+        gr.Radio(choices=["选项1", "选项2", "选项3"]),
+        gr.Checkbox(label="选择此选项"),
+        gr.Slider(minimum=10, maximum=90),
+        gr.Image(shape=(100, 100)),
+        gr.Audio(),
+        gr.Video(),
+        gr.File(),
+        gr.Number(),
+        gr.Dataframe(headers=["列A", "列B", "列C"]),
+        gr.ColorPicker(),  # 添加颜色选择器输入组件
+    ],
+    outputs=[
+        gr.Textbox(),
+        gr.Textbox(),
+        gr.Textbox(),
+        gr.Markdown(),
+        gr.Image(),
+        gr.Audio(),
+        gr.Json(),
+        gr.File(),
+        gr.Video(),
+        gr.HTML(),
+        gr.Textbox(),  # 添加新的输出组件
+    ],
+    title="Gradio 示例",
+    description="这是一个 Gradio 示例应用。",
+    examples=[
+        [
+            "您好",
+            "选项A",
+            "选项1",
+            True,
+            25,
+            "path/to/image.png",
+            "path/to/audio.wav",
+            "path/to/video.mp4",
+            "path/to/file.txt",
+            42,
+            [
+                ["值A1", "值B1", "值C1"],
+                ["值A2", "值B2", "值C2"],
+            ],
+            "#FF0000",  # 颜色选择器示例值
+        ]
+    ],
+).launch()
+
+```
 
 ---
 
@@ -392,12 +509,12 @@ EXAMPLE：
 
 [14]>>> process.extract(query, choices, processor=default_processor, scorer=default_scorer, limit=5)
 query 是字符串
-choices 是数组，数组元素 是字符串
+choices 是列表，列表元素 是字符串
 processor 是对输入比较的字符串的处理函数，默认是fuzzywuzzy.utils.full_process()：先将字符串s转换为小写，去掉除字母和数字之外的字符（发现不能去掉-字符），剩下的字符串以空格分开，然后排序
 scorer 是计算两个字符串相似度的函数，默认为函数[12]
 limit 是输出元素个数
-
-输出为数组，元素为元组，元组第一个匹配到的为str，第二个匹配到的为int（score）
+extract之后的数据类型是列表，即使limit=1，最后还是列表，注意和下面extractOne的区别
+输出为列表，元素为元组，元组第一个匹配到的为str，第二个匹配到的为int（score）
 对于输出:按照score排序
 
 
@@ -414,5 +531,51 @@ score_cutoff 为一个阈值, 当score小于该阈值时，不会输出。返回
 
 
 [18]>>> process.dedupe(contains_dupes, threshold=70, scorer=fuzz.token_set_ratio)
-contains_dupes 是数组，数组元素 为字符串。
+contains_dupes 是列表，列表元素 为字符串。
 取出相似度小于 threshold 的字符串，相似度大于 threshold 的字符串取最长一个。
+
+
+```
+
+
+#### 我的实操
+
+**数据示例：**
+```json
+
+
+[
+  {
+    "instruction": "外部发过来的邮件被拦截怎么办？",
+    "input": "",
+    "output": "您可以参考以下步骤申请释放邮件：\n1、打开IT Service Request：http://eas1prd2:8029/isrs/is/createRequest.action。\n2、Problem Type选择：E-mail。\n3、Request Ticket Type选择：Email Release。\n4、Descriptions填写申请理由，点击“Submit”。\n5、待签核完毕后，我们会为您释放被拦截的邮件。如果邮件本身携带有病毒，我们将无法给您释放。"
+  },
+  {
+    "instruction": "Outlook打不开，一直正在启动，请问如何处理？",
+    "input": "",
+    "output": "出现以上问题，您可以参考以下步骤处理：\n1、关闭Outlook。\n2、按住键盘Ctrl键不放，双击Outlook，直到提示“按住CTRL键。是否要在安全模式中启动Outlook”后，松开Ctrl键，点击“是”。\n3、在选择配置文件界面，点击“是”。\n4、正常打开Outlook后，关闭Outlook。之后您可以正常打开Outlook。"
+  }
+]
+
+
+```
+
+
+**函数示例：**
+```python
+
+
+# 读取JSON文件
+with open('data.json', 'r', encoding='utf-8') as file:
+    data = json.load(file)
+    
+# 定义模糊匹配函数
+def fuzzy_match(query):
+    questions = [item['instruction'] for item in data]
+    match = process.extractOne(query, questions)
+    for item in data:
+        if item['instruction'] == match[0]:
+            return item['output']
+
+
+```
