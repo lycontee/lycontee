@@ -131,28 +131,57 @@ def predict(history, prompt):
 
 with gr.Blocks() as demo:
     gr.HTML("""<h1 align="center">test</h1>""")
-    chatbot = gr.Chatbot(label="testguy", container=True, height=850)
+    chatbot = gr.Chatbot(label="testguy", container=True, height=550)
+
+    def set_prompt(prompt_text):
+        return [[parse_text(prompt_text), f"那么{prompt_text}"]]
+
+    def user(query, history):
+        return "", history + [[parse_text(query), ""]]
+
+    def update(choice):
+        if choice == "text":
+            return gr.update(visible=False)
+        else:
+            return gr.update(visible=True)
+
+    def update_2(choice):
+        if choice == "text":
+            return gr.update(visible=False)
+        else:
+            return gr.update(visible=True)
+
+    def vote(data: gr.LikeData):
+        if data.liked:
+            print("You upvoted this response: " + data.value)
+        else:
+            print("You downvoted this response: " + data.value)
 
     with gr.Row():
         user_input = gr.Textbox(show_label=False, placeholder="Input...", lines=4, container=False)
         with gr.Column(min_width=10, scale=0.2):
             submitBtn = gr.Button("Submit")
-            emptyBtn = gr.Button("Clear History")
+            emptyBtn = gr.Button("Clear")
 
     with gr.Row():
-        
+        with gr.Column(min_width=15, scale=2):
+            prompt_input = gr.Textbox(show_label=False, scale=50, interactive=True, visible=False, container=False, lines=4, placeholder="Input...")
+        with gr.Column(min_width=5, scale=0.2):
+            Dpd = gr.Dropdown(['text','prompt'], value='text', container=False, interactive=True, label="choose the mode")
+            promptBtn = gr.Button(value="Submit", visible=False)
 
+    Dpd.change(update, inputs=Dpd, outputs=prompt_input)
 
-    def user(query, history):
-        return "", history + [[parse_text(query), ""]]
-
+    Dpd.change(update, inputs=Dpd, outputs=promptBtn)
 
     submitBtn.click(user, [user_input, chatbot], [user_input, chatbot], queue=False).then(
-        predict, chatbot, chatbot
+        predict, [chatbot, prompt_input], chatbot
     )
-    emptyBtn.click(lambda: None, None, chatbot, queue=False)
+    emptyBtn.click(lambda: (None, None), None, [chatbot, prompt_input], queue=False)
 
+    promptBtn.click(set_prompt, inputs=[prompt_input], outputs=chatbot)
 
+    chatbot.like(vote, None, None) 
 
 demo.queue()
 # demo.launch(server_name="127.0.0.1", server_port=8000, inbrowser=True, share=True)
