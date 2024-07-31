@@ -1,5 +1,5 @@
 ## 学习资料
-- [Custom Components In Five Minutes](https://www.gradio.app/guides/custom-components-in-five-minutes)
+- [Custom Components In Five Minutes](https://www.gradio.app/guides/custom-components-in-five-minutes)A
 
 - [一文搞懂模型展示工具Gradio的所有功能 - 知乎](https://zhuanlan.zhihu.com/p/679668818)
 
@@ -14,9 +14,6 @@
 - [HF镜像网站](https://hf-mirror.com/)
 
 - [最新开源大语言模型GLM-4模型详细教程—环境配置+模型微调+模型部署+效果展示_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV11z421b7f4/?spm_id_from=333.880.my_history.page.click&vd_source=e5f5fb7dfde58880e2a7485fc9f2da4f)
-
-- [GLM-4-9B-Chat WebDemo 部署报错：ValueError: too many values to unpack_慕课手记](https://www.imooc.com/article/346060)
-
 
 ---
 
@@ -578,4 +575,18 @@ def fuzzy_match(query):
             return item['output']
 
 
+```
+
+### 调用ollama
+```bash
+[jnw@PPSE1LLM143 Projetcs]$ ollama list
+NAME                                    ID              SIZE    MODIFIED    
+qwen2:72b                               14066dfa503f    41 GB   6 hours ago
+mannix/defog-llama3-sqlcoder-8b:latest  9bbf2be085b0    4.7 GB  6 hours ago
+deepseek-coder-v2:16b                   8577f96d693e    8.9 GB  6 hours ago
+llama3.1:70b                            d729c66f84de    39 GB   6 hours ago
+qwen2:0.5b                              6f48b936a09f    352 MB  6 hours ago
+qwen2:1.5b                              f6daf2b25194    934 MB  6 hours ago
+[jnw@PPSE1LLM143 Projetcs]$ ollama run qwen2:72b
+>>> /bye
 ```
